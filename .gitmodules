@@ -1,0 +1,3 @@
+[submodule "webscreenshot"]
+	path = webscreenshot
+	url = https://github.com/maaaaz/webscreenshot
