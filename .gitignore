@@ -1,3 +1,7 @@
 *.csv
 *.swp
 images/*
+phi_dataset/*
+phi_checkpoints/*
+phi_models/*
+*.ipynb_*
