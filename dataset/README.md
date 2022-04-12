@@ -7,4 +7,4 @@
 
 # Setup for dataset collection
 pip install selenium splinter
-wget https://moz.com/top-500/download/?table=top500Domains
+wget https://moz.com/top-500/download?table=top500Domains -O top500Domains.csv
