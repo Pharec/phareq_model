@@ -5,3 +5,7 @@ images/*
 *.png
 
 *.log
+phi_dataset/*
+phi_checkpoints/*
+phi_models/*
+*.ipynb_*
