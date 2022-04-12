@@ -4,6 +4,7 @@
 images/*
 *.png
 
+*/logs/*
 *.log
 phi_dataset/*
 phi_checkpoints/*
