@@ -1,3 +1,7 @@
 *.csv
 *.swp
+
 images/*
+*.png
+
+*.log
