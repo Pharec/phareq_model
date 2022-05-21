@@ -1,7 +1,15 @@
 *.csv
 *.swp
+
 images/*
+*.png
+
+*/logs/*
+*.log
 phi_dataset/*
 phi_checkpoints/*
 phi_models/*
 *.ipynb_*
+
+crawler_*.txt
+crawled_urls
