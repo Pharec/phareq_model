@@ -1,6 +1,7 @@
 from splinter import Browser
 from tqdm import tqdm
 from pathlib import Path
+from spidy.crawler import make_file_path
 
 
 def collect_images(urls):
@@ -16,16 +17,22 @@ def collect_images(urls):
         try:
             browser.visit(url)
         except Exception as e:
-            print(f"Failed to visit {url} with exception {e}") 
+            print(f"Failed to visit {url} with exception {e}")
             continue
 
-        image_path = (
-            Path("./") / f"collected_images/img_{url.split('//')[-1]}_"
-        ).absolute()
+        if url[:5] == 'https':
+            path = url[8:]
+        elif url[:4] == 'http':
+            path = url[7:]
+        else:
+            path = url
+        image_path = Path(make_file_path(path, ''))
         browser.screenshot(
-            str(image_path)
+            str(image_path.absolute()),
+            unique_file=False
         )
     browser.quit()
+
 
 if __name__ == "__main__":
     import csv
