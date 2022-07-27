@@ -6,12 +6,11 @@
 
 import tldextract
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from spidy import crawler
 
 from urllib.request import urlopen
 import mimetypes
-
 
 def guess_type_of(link, strict=True):
     """
@@ -50,10 +49,15 @@ def crawl_page(page_url, depth=2, limit=None):
 def crawl_once(page_url, limit=None):
 
     def preprocess_url(crawled_url):
-        if crawled_url[0:4] == 'http':
-            return crawled_url
+        if crawled_url[:4] != 'http':
+            if page_url[-1] != '/' and crawled_url[0] != '/':
+                crawled_url = "/" + crawled_url
+            res_url = urljoin(page_url, crawled_url)
         else:
-            return urljoin(page_url, crawled_url)
+            res_url = crawled_url
+        parsed_url = urlparse(res_url)
+        # return f"{parsed_url.scheme}/{parsed_url.netloc}/{parsed_url.path}"
+        return parsed_url.geturl().split("#")[0]
 
     page_domain = tldextract.extract(page_url).registered_domain
 
@@ -63,7 +67,7 @@ def crawl_once(page_url, limit=None):
         print(f"Failed to crawl {page_url} with exception {e}")
         return list()
 
-    pre_urls = [preprocess_url(url) for url in crawled_urls]
+    pre_urls = [preprocess_url(url) for url in crawled_urls if url]
     urls = [
         url for url in pre_urls
         if check_link(url, page_domain)
@@ -84,10 +88,14 @@ def check_link(url, page_domain):
     if url[0:4] != 'http':
         return False
 
-    if tldextract.extract(url).registered_domain != page_domain:
+    link_domain = tldextract.extract(url).registered_domain
+    if  link_domain != page_domain:
         return False
 
     if guess_type_of(url) != 'text/html':
+        return False
+
+    if ':' in url.split('/')[-1]:
         return False
 
     return True
