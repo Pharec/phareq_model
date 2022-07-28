@@ -47,6 +47,7 @@ def crawl_page(page_url, depth=2, limit=None):
     return list(seen_urls)
 
 def crawl_once(page_url, limit=None):
+    scheme = urlparse(page_url).scheme
 
     def preprocess_url(crawled_url):
         if crawled_url[:4] != 'http':
@@ -54,7 +55,11 @@ def crawl_once(page_url, limit=None):
                 crawled_url = "/" + crawled_url
             res_url = urljoin(page_url, crawled_url)
         else:
-            res_url = crawled_url
+            if scheme != crawled_url[:len(scheme)]:
+                res_url = scheme + "://" + crawled_url.split("://")[-1]
+            else:
+                res_url = crawled_url
+
         parsed_url = urlparse(res_url)
         # return f"{parsed_url.scheme}/{parsed_url.netloc}/{parsed_url.path}"
         return parsed_url.geturl().split("#")[0]
