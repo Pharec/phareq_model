@@ -70,7 +70,9 @@ def crawl_once(page_url, limit=None):
         print(f"Failed to crawl {page_url} with exception {e}")
         return list()
 
-    pre_urls = [preprocess_url(url) for url in crawled_urls if url]
+    pre_urls = [
+        preprocess_url(url) for url in crawled_urls
+        if url and url.strip()]
     urls = [
         url for url in pre_urls
         if check_link(url, page_domain)
@@ -97,8 +99,19 @@ def check_link(url, page_domain):
     if guess_type_of(url) != 'text/html':
         return False
 
-    if ':' in url.split('/')[-1]:
-        return False
+    other_protocols = [
+        "tel:",
+        "callto:",
+        "mailto:",
+        "sms:",
+        "telprompt",
+        "javascript"
+    ]
+    other_protocols += [p.upper() for p in other_protocols]
+
+    for p in other_protocols:
+        if url.split('/')[-1].startswith(p):
+            return False
 
     return True
 
