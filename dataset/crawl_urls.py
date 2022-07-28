@@ -30,7 +30,6 @@ def crawl_page(page_url, depth=2, limit=None):
         Crawl iteratively for a certain depth
     """
     seen_urls = set()
-    # url_depth = [ set() for _ in range(depth) ] 
     url_depth = list()
     url_depth.append(set(crawl_once(page_url)))
     seen_urls.update(url_depth[0])
@@ -48,6 +47,7 @@ def crawl_page(page_url, depth=2, limit=None):
 
 def crawl_once(page_url, limit=None):
     scheme = urlparse(page_url).scheme
+    page_domain = tldextract.extract(page_url).registered_domain
 
     def preprocess_url(crawled_url):
         if crawled_url[:4] != 'http':
@@ -64,8 +64,6 @@ def crawl_once(page_url, limit=None):
         # return f"{parsed_url.scheme}/{parsed_url.netloc}/{parsed_url.path}"
         return parsed_url.geturl().split("#")[0]
 
-    page_domain = tldextract.extract(page_url).registered_domain
-
     try:
         crawled_urls = crawler.crawl(page_url)
     except Exception as e:
@@ -76,7 +74,6 @@ def crawl_once(page_url, limit=None):
     urls = [
         url for url in pre_urls
         if check_link(url, page_domain)
-        # if not crawler.check_link(url, robots_index=False) and
     ]
 
     if limit:
