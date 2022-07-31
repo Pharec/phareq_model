@@ -117,11 +117,6 @@ def check_link(url, page_domain):
 
 
 def crawl_domains(domain_list, save_dir="crawled_urls", save=True):
-    # url_dict = dict()
-    # for domain_name in domain_list:
-        # url_list = crawl_page(domain_name)
-        # url_dict[domain_name] = url_list
-
     url_dict = {domain_name: [url for url in crawl_page(domain_name)]
                 for domain_name in domain_list}
 
@@ -132,10 +127,10 @@ def crawl_domains(domain_list, save_dir="crawled_urls", save=True):
     return url_dict
 
 
-def save_domain_urls(domain_name, url_list, save_dir="crawled_urls"):
+def save_domain_urls(domain_url, url_list, save_dir="crawled_urls"):
     save_path = Path(save_dir)
     save_path.mkdir(parents=True, exist_ok=True)
-    file_name = domain_name.split('//')[-1].replace('.', '_') + "_url.list"
+    file_name = urlparse(domain_url).netloc.replace('.', '_') + "_url.list"
     with open(save_path / file_name, 'w') as fp:
         fp.write('\n'.join(url_list))
 
