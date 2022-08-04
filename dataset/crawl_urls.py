@@ -144,7 +144,8 @@ if __name__ == "__main__":
         _ = next(reader)
         domain_urls = [f"http://{line[1]}" for line in reader]
 
-    domain_url = 'https://splonline.com.sa'
+    # domain_url = 'https://splonline.com.sa'
+    domain_url = 'https://kacst.edu.sa'
 
     urls = crawl_page(domain_url, depth=0)
     # url_dict = crawl_domains(domain_urls, "crawled_urls")
