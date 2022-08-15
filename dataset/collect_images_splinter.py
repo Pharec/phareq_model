@@ -1,12 +1,27 @@
+import os
 from splinter import Browser
 from tqdm import tqdm
 from pathlib import Path
-from spidy.crawler import make_file_path
 
 
-def collect_images(urls):
+def url_path(url):
+    if url[:7] == "http://":
+        lim = 7
+    else:
+        lim = 8
+
+    return (
+        url[lim:].strip('/')
+        .strip()
+        .replace('/', '__')
+    )
+
+
+def collect_images(urls, save_dir):
+    dir_path = Path(f"collected_images/{save_dir}")
+    dir_path.mkdir(parents=True, exist_ok=True)
+
     browser = Browser(headless=True)
-    # browser = Browser()
 
     width = 1024
     height = 3 * width // 4
@@ -20,18 +35,27 @@ def collect_images(urls):
             print(f"Failed to visit {url} with exception {e}")
             continue
 
-        if url[:5] == 'https':
-            path = url[8:]
-        elif url[:4] == 'http':
-            path = url[7:]
-        else:
-            path = url
-        image_path = Path(make_file_path(path, ''))
+        image_path = (
+            dir_path / f"img_{url_path(url)}"
+        ).absolute()
+
         browser.screenshot(
-            str(image_path.absolute()),
+            str(image_path),
             unique_file=False
         )
     browser.quit()
+
+
+def read_crawled_urls(urls_dir='crawled_urls'):
+    urls_dict = dict()
+
+    filenames = os.listdir(urls_dir)
+    for fn in filenames:
+        with open(Path(urls_dir) / fn, 'r') as fp:
+            dir_name = fn.split('.')[0].replace('url', 'images')
+            urls_dict[dir_name] = [url.strip() for url in fp]
+
+    return urls_dict
 
 
 if __name__ == "__main__":
@@ -44,4 +68,9 @@ if __name__ == "__main__":
         urls = [f"http://{line[1]}" for line in reader]
 
     # urls = ['http://google.com', 'http://pharec-dl.tech']
-    collect_images(urls[:10])
+    # collect_images(urls[:10])
+    urls_dict = read_crawled_urls()
+
+    for dir_name, urls in urls_dict.items():
+        print(f"==== Collecting images for {dir_name} ...")
+        collect_images(urls, dir_name)
