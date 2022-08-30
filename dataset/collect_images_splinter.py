@@ -39,10 +39,14 @@ def collect_images(urls, save_dir):
             dir_path / f"img_{url_path(url)}"
         ).absolute()
 
-        browser.screenshot(
-            str(image_path),
-            unique_file=False
-        )
+        try:
+            browser.screenshot(
+                str(image_path),
+                unique_file=False
+            )
+        except Exception as e:
+            print(f"Failed to screenshot {url} with exception {e}")
+
     browser.quit()
 
 
