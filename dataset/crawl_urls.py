@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from spidy import crawler
 
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import mimetypes
 
 
@@ -20,8 +20,11 @@ def guess_type_of(link, strict=True):
     link_type, _ = mimetypes.guess_type(link)
     if link_type is None and strict:
         try:
-            u = urlopen(link, timeout=10)
-            link_type = u.headers.get_content_type()
+            req = Request(
+                link, headers=crawler.HEADERS['Firefox'], method='HEAD'
+            )
+            with urlopen(req, timeout=10) as resp:
+                link_type = resp.headers.get_content_type()
         except Exception as e:
             print(f"Failed to urlopen {link} to check page type with: {e}")
     return link_type
@@ -156,46 +159,8 @@ def read_domains(domains_list_filename='domain_refs/draft1_domains.list'):
 
 
 if __name__ == "__main__":
-    import csv
-    with open('top500Domains.csv') as fp:
-        reader = csv.reader(fp)
-
-        # Skip header
-        _ = next(reader)
-        domain_urls = [f"http://{line[1]}" for line in reader]
-
-    # domain_url = 'https://splonline.com.sa'
-    # domain_url = 'https://mcit.gov.sa'
-    # domain_url = 'https://apple.com'
-    # domain_url = 'https://dropbox.com'
-    # domain_url = 'https://amazon.com'
-    # domain_url = 'https://amazon.sa'
-    # domain_url = 'https://noon.com'
-    # domain_url = 'https://xcite.com'
-    # domain_url = 'https://google.com'
-    # domain_url = 'https://aramex.com'
-    # domain_url = 'https://airbnb.com'
-    # domain_url = 'https://paypal.com'
-    # domain_url = 'https://dhl.com'
-    # domain_url = 'https://whatsapp.com'
-    # domain_url = 'https://youtube.com'
-    # domain_url = 'https://tiktok.com'
-    # domain_url = 'https://facebook.com'
-    # domain_url = 'https://twitter.com'
-    # domain_url = 'https://coinbase.com'
-    # domain_url = 'https://rain.com'
-    # domain_url = 'https://binance.com'
-    # domain_url = 'https://bitoasis.net'
-    # domain_url = 'https://coursera.com'
-    # domain_url = 'https://edx.com'
-    # domain_url = 'https://udemy.com'
-    # domain_url = 'https://alahli.com'
-    # domain_url = 'https://alrajhibank.com'
-    # domain_url = 'https://bankaljazira.com'
-    # domain_url = 'https://anb.com.sa'
-    # domain_url = 'https://alinma.com'
-
     # urls = crawl_page(domain_url, depth=0)
     # url_dict = crawl_domains(domain_urls, "crawled_urls")
+
     domains = read_domains()
-    url_dict = crawl_domains(domains, save=True)
+    url_dict = crawl_domains(domains, save=True, limit=400)
