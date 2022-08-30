@@ -10,3 +10,9 @@
 pip install selenium splinter
 
 wget https://moz.com/top-500/download?table=top500Domains -O top500Domains.csv
+
+# New collection method:
+
+Rather than collecting in two steps, we simulate browsing but in an exhustive
+way with parametrized limits. This can be done using splinter to crawl as
+well as collect images
