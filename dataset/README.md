@@ -11,6 +11,15 @@ pip install selenium splinter
 
 wget https://moz.com/top-500/download?table=top500Domains -O top500Domains.csv
 
+# New Dataset collected
+### Trusted sites:
+- Number of domains = 72
+- Number of images = 12740
+- Source: domains seed list from a combination of sources (mostly done manually)
+### Phishing sites:
+- Number of URLs = Number of images = 515
+- Source: Phishtank (filtered on active -> then cleaned manually)
+
 # New collection method:
 
 Rather than collecting in two steps, we simulate browsing but in an exhustive
