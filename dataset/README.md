@@ -11,7 +11,7 @@ pip install selenium splinter
 
 wget https://moz.com/top-500/download?table=top500Domains -O top500Domains.csv
 
-# New Dataset collected
+# New Dataset collected (Pharec_toy_dataset)
 ### Trusted sites:
 - Number of domains = 72
 - Number of images = 12740
@@ -19,6 +19,9 @@ wget https://moz.com/top-500/download?table=top500Domains -O top500Domains.csv
 ### Phishing sites:
 - Number of URLs = Number of images = 515
 - Source: Phishtank (filtered on active -> then cleaned manually)
+
+### Dataset link:
+https://drive.google.com/drive/folders/1u2DSxD7vQfK_0EjiqHcX1cxDcFcRcER4?usp=sharing
 
 # New collection method:
 
