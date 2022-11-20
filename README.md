@@ -4,10 +4,7 @@
 
 # Pharec model training and testing
 
-We went through multiple iterations of architecting and training the model you will find a few of them in the published notebooks in this repo linked bellow. The last model (__[deployed currently](https://app.pharec.com)__) is **[wpd4](test/test_wpd4.ipynb)**.
+We went through multiple iterations of architecting and training the model. You will find a few of them in notebooks linked bellow. The last model trained (__[deployed currently](https://app.pharec.com)__) is **[wpd4](test/test_wpd4.ipynb)**.
+
 - Training notebooks in [local_training directory](./local_training)
 - Test notebooks in [test directory](./test)
-
-
-
-
