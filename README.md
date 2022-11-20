@@ -1,6 +1,7 @@
-![pharec_banner_dark](https://user-images.githubusercontent.com/55042380/202895454-06718850-cca2-4ae9-b863-f4ca0d21ac29.png)
+![Pharec_white2_banner_dark2_128dpi_rounded](https://user-images.githubusercontent.com/55042380/202906707-d232dd2e-fb91-4dbc-a0aa-76ddfd6344e3.png)
 
 ***Note: this repo does not contain a dataset, it is only published to verify model test metrics***
+
 
 # Pharec model training and testing
 
